@@ -1,0 +1,387 @@
+<div class="pos-receipt o_a5_invoice_receipt">
+  <style>
+    /* ============================================================
+       QUICK SETTINGS (Change only these to control whole receipt)
+       ============================================================ */
+    :root{
+      --a5w: 148mm;
+
+      /* Global typography */
+      --base-font: 11px;
+      --line-height: 1.25;
+
+      /* Company block */
+      --company-align: center;     /* left | center | right */
+      --company-name-size: 13px;
+      --company-name-weight: 800;  /* 400 normal, 700 bold, 800 extra */
+      --company-meta-size: 10.5px;
+
+      /* Title (Invoice Order...) */
+      --title-size: 14px;
+      --title-weight: 800;
+
+      /* Customer name */
+      --customer-name-size: 14px; /* increase as you want */
+      --customer-name-weight: 800;
+      --customer-align: left;     /* left | center | right */
+
+      /* Meta (Invoice Date / Due Date) */
+      --meta-size: 10.5px;
+      --meta-key-color: #000;
+      --meta-key-weight: 700;
+      --meta-val-weight: 800;
+
+      /* Tables */
+      --table-head-size: 10.5px;
+      --table-body-size: 10.5px;
+      --table-padding-y: 1.5mm;
+      --table-padding-x: 1.5mm;
+
+      /* Totals/Payments table */
+      --totals-size: 10.5px;
+      --totals-width: 60mm;
+
+      /* Borders */
+      --border: 1px solid #000;
+    }
+
+    /* =========================
+       A5 PRINT
+       ========================= */
+    @page { size: A5 portrait; margin: 6mm; }
+
+    /* Force A5 width in POS preview + print */
+    .receipt-screen .pos-receipt-container,
+    .receipt-screen .pos-receipt-container > div,
+    .receipt-screen .pos-receipt,
+    .pos-receipt.o_a5_invoice_receipt {
+      width: var(--a5w) !important;
+      max-width: var(--a5w) !important;
+      min-width: var(--a5w) !important;
+      margin: 0 auto !important;
+    }
+
+    /* Whole page layout (footer bottom) */
+    .pos-receipt.o_a5_invoice_receipt{
+      min-height: 198mm !important; /* 210 - (6+6) */
+      display: flex !important;
+      flex-direction: column !important;
+      font-size: var(--base-font);
+      line-height: var(--line-height);
+      padding: 0;
+      color: #000 !important;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .pos-receipt.o_a5_invoice_receipt *{
+      color: #000 !important;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* =========================
+       HEADER (Company)
+       ========================= */
+    .o_hdr{
+      text-align: var(--company-align);
+      padding-bottom: 4mm;
+      border-bottom: var(--border);
+      margin-bottom: 5mm;
+    }
+    .o_logo img{
+      display: block;
+      margin: 0 auto 2mm auto;
+      max-height: 22mm;
+      max-width: 65mm;
+    }
+    .o_company_name{
+      font-weight: var(--company-name-weight);
+      font-size: var(--company-name-size);
+      margin-bottom: 1mm;
+    }
+    .o_company_meta{
+      font-size: var(--company-meta-size);
+      line-height: 1.25;
+    }
+    .o_company_meta div{ margin: 0.3mm 0; }
+
+    /* =========================
+       TITLE
+       ========================= */
+    .o_title{
+      font-size: var(--title-size);
+      font-weight: var(--title-weight);
+      margin: 0 0 3mm 0;
+    }
+
+    /* =========================
+       CUSTOMER + META (simple, no box)
+       ========================= */
+    .o_customer{
+      text-align: var(--customer-align);
+      font-size: var(--customer-name-size);
+      font-weight: var(--customer-name-weight);
+      margin: 0 0 1.5mm 0;
+    }
+
+    .o_meta{
+      margin: 0 0 2mm 0;
+    }
+    .o_meta_tbl{
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--meta-size);
+    }
+    .o_meta_tbl td{
+      padding: 0.6mm 0;
+      vertical-align: top;
+    }
+    .o_meta_tbl .k{
+      color: var(--meta-key-color);
+      font-weight: var(--meta-key-weight);
+      width: 35%;
+    }
+    .o_meta_tbl .v{
+      font-weight: var(--meta-val-weight);
+      width: 65%;
+      text-align: left;
+    }
+
+    /* =========================
+       LINES TABLE (invoice grid)
+       ========================= */
+    .o_lines{
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2mm;
+      border: var(--border);
+    }
+    .o_lines thead th{
+      text-align: left;
+      font-size: var(--table-head-size);
+      padding: var(--table-padding-y) var(--table-padding-x);
+      border-bottom: var(--border);
+      border-right: var(--border);
+      font-weight: 800;
+    }
+    .o_lines thead th:last-child{ border-right: 0; }
+
+    .o_lines tbody td{
+      padding: var(--table-padding-y) var(--table-padding-x);
+      font-size: var(--table-body-size);
+      border-bottom: var(--border);
+      border-right: var(--border);
+      vertical-align: top;
+    }
+    .o_lines tbody tr:last-child td{ border-bottom: 0; }
+    .o_lines tbody td:last-child{ border-right: 0; }
+
+    .r{ text-align: right; }
+    .c{ text-align: center; }
+    .desc{ width: 52%; word-break: break-word; }
+    .qty{ width: 12%; }
+    .unit{ width: 14%; }
+    .tax{ width: 10%; }
+    .amt{ width: 12%; }
+
+    /* =========================
+       TOTALS / PAYMENTS (right)
+       ========================= */
+    .o_totals_wrap{
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 5mm;
+    }
+    .o_totals_block{
+      width: var(--totals-width);
+    }
+    .o_totals{
+      width: 100%;
+      border: var(--border);
+      border-collapse: collapse;
+      font-size: var(--totals-size);
+    }
+    .o_totals td{
+      padding: 1.6mm 2mm;
+      border-bottom: var(--border);
+    }
+    .o_totals tr:last-child td{ border-bottom: 0; }
+
+    .o_totals .k{ font-weight: 800; }
+    .o_totals .v{ text-align: right; font-weight: 800; }
+
+    .o_section_title{
+      margin-top: 4mm;
+      font-weight: 800;
+      font-size: var(--totals-size);
+    }
+
+    /* =========================
+       FOOTER (bottom)
+       ========================= */
+    .o_footer{
+      margin-top: auto !important;   /* push to bottom */
+      padding-top: 3mm;
+      border-top: var(--border);
+      font-size: 10.5px;
+      text-align: left;
+    }
+    .o_footer .small{ margin-top: 2mm; }
+
+    @media print{
+      html, body{ width: var(--a5w) !important; }
+    }
+  </style>
+
+  <!-- ============================================================
+       VARIABLES
+       ============================================================ -->
+  <t t-set="show_taxes" t-value="(order.get_total_tax and order.get_total_tax() > 0)"/>
+
+  <t t-set="paid" t-value="0"/>
+  <t t-if="order.paymentlines and order.paymentlines.models and order.paymentlines.models.length">
+    <t t-foreach="order.paymentlines.models" t-as="p">
+      <t t-set="paid" t-value="paid + p.amount"/>
+    </t>
+  </t>
+  <t t-set="due" t-value="receipt.total_with_tax - paid"/>
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <div class="o_hdr">
+    <!-- If you want logo back, paste the working logo block here -->
+    <div class="o_company_name">
+      <t t-esc="receipt.company.name"/>
+    </div>
+
+    <div class="o_company_meta">
+      <!--<t t-if="receipt.company.contact_address">-->
+      <!--  <div><t t-esc="receipt.company.contact_address"/></div>-->
+      <!--</t>-->
+      <t t-if="receipt.company.phone">
+        <div>Phone: <t t-esc="receipt.company.phone"/></div>
+      </t>
+      <t t-if="receipt.company.email">
+        <div><t t-esc="receipt.company.email"/></div>
+      </t>
+      <t t-if="receipt.company.website">
+        <div><t t-esc="receipt.company.website"/></div>
+      </t>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TITLE
+       ============================================================ -->
+  <div class="o_title">
+    Invoice <t t-esc="receipt.name"/>
+  </div>
+
+  <!-- ============================================================
+       CUSTOMER
+       ============================================================ -->
+  <t t-if="receipt.client">
+    <div class="o_customer">
+      <t t-esc="receipt.client.name"/>
+    </div>
+  </t>
+
+  <!-- ============================================================
+       META (Invoice Date / Due Date)
+       ============================================================ -->
+  <div class="o_meta">
+    <table class="o_meta_tbl">
+      <tr>
+        <td class="k">Invoice Date</td>
+        <td class="v">
+          <t t-if="receipt.date and receipt.date.localestring">
+            <t t-esc="receipt.date.localestring"/>
+          </t>
+        </td>
+      </tr>
+      <tr>
+        <td class="k">Due Date</td>
+        <td class="v">
+          <t t-if="receipt.date and receipt.date.localestring">
+            <t t-esc="receipt.date.localestring"/>
+          </t>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ============================================================
+       LINES
+       ============================================================ -->
+  <table class="o_lines">
+    <thead>
+      <tr>
+        <th class="desc">DESCRIPTION</th>
+        <th class="qty r">QUANTITY</th>
+        <th class="unit r">UNIT PRICE</th>
+        <th t-if="show_taxes" class="tax c">TAXES</th>
+        <th class="amt r">AMOUNT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <t t-foreach="orderlines" t-as="l">
+        <tr>
+          <td class="desc"><t t-esc="l.get_product().display_name"/></td>
+          <td class="qty r"><t t-esc="l.get_quantity_str_with_unit()"/></td>
+          <td class="unit r"><t t-esc="l.get_unit_price().toFixed(2)"/></td>
+          <td t-if="show_taxes" class="tax c"><t t-esc="''"/></td>
+          <td class="amt r"><t t-esc="l.get_display_price().toFixed(2)"/></td>
+        </tr>
+      </t>
+    </tbody>
+  </table>
+
+  <!-- ============================================================
+       TOTALS + PAYMENTS (inside same table)
+       ============================================================ -->
+  <div class="o_totals_wrap">
+    <div class="o_totals_block">
+      <table class="o_totals">
+        <tr>
+          <td class="k">Total</td>
+          <td class="v"><t t-esc="receipt.total_with_tax.toFixed(2)"/></td>
+        </tr>
+        <tr>
+          <td class="k">Paid</td>
+          <td class="v"><t t-esc="paid.toFixed(2)"/></td>
+        </tr>
+        <tr t-if="(receipt.previous_credit || 0) != 0">
+          <td class="k">Previous Credit</td>
+          <td class="v"><t t-esc="(receipt.previous_credit || 0).toFixed(2)"/></td>
+        </tr>
+        <tr>
+          <td class="k">Amount Due</td>
+          <td class="v"><t t-esc="(due > 0 ? due : 0).toFixed(2)"/></td>
+        </tr>
+
+        <!-- Payments lines (same table) -->
+        <t t-if="order.paymentlines and order.paymentlines.models and order.paymentlines.models.length">
+          <t t-foreach="order.paymentlines.models" t-as="pay">
+            <tr>
+              <td class="k"><t t-esc="pay.name"/></td>
+              <td class="v"><t t-esc="pay.amount.toFixed(2)"/></td>
+            </tr>
+          </t>
+        </t>
+      </table>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <div class="o_footer">
+    <div class="small">
+      بل کے بغیر مال کی واپسی نہیں ہوگی۔ مال کی واپسی یا تبدیلی 15 دن کے اندر ہوگی۔ امپورٹڈ مال کی کوئی گارنٹی نہیں ہوگی۔
+    </div>
+    <div class="small">
+      SOFTWARE DEVELOPED BY AM Odoo Solutions 0305-6567570
+    </div>
+  </div>
+</div>
