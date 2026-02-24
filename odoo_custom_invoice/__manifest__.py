@@ -13,9 +13,12 @@ Custom Invoice Reports
 * Customizable report format (logo alignment, font sizes, etc.)
 * PDF download button
     """,
-    "author": "AM Odoo solutions",
-    'company': 'AM Odoo Solutions',
-    'maintainer': 'AM Odoo Solutions',
+    'author': 'Ahmad_odoo5',
+    'website': 'https://www.linkedin.com/in/ahmad-odoo5/',
+    'license': 'LGPL-3',
+    'maintainers': ['AM Odoo Solutions'],
+    'price': 50.59,
+    'currency': 'USD',
     'depends': ['account', 'point_of_sale'],
     'data': [
         'security/ir.model.access.csv',
@@ -37,7 +40,7 @@ Custom Invoice Reports
             'odoo_custom_invoice/static/src/scss/report.scss',
         ],
     },
-    'images': ['static/description/icon.png'],
+    'images': ['static/description/banner.png'],
     'installable': True,
     'application': False,
     'auto_install': False,

@@ -1,1188 +1,283 @@
 <!DOCTYPE html>
-<!-- Updated: 24 Feb 2026 | Contact: 0305-6567570 | m.ahmadodoo5@gmail.com -->
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Custom Invoice Reports - Odoo 15</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
     <style>
-        :root {
-            --primary: #714b67;
-            --primary-dark: #4a2f44;
-            --accent: #00b09b;
-            --light-bg: #f8f5fb;
-            --text-dark: #121212;
-            --text-muted: #64728f;
-            --card-shadow: 0 4px 24px rgba(113, 75, 103, 0.10);
+        :root{
+            --odoo-primary:#714B67;
+            --odoo-primary-dark:#5a3c52;
+            --odoo-accent:#875A7B;
+            --odoo-light:#f6f4f6;
+            --text-dark:#2f2f2f;
+            --text-muted:#6c757d;
         }
 
-        * {
-            box-sizing: border-box;
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin:0;
+            padding:0;
+            color:var(--text-dark);
+            background:#fff;
         }
 
-        body {
-            font-family: "Montserrat", sans-serif;
-            color: var(--text-dark);
-            background: #fff;
+        .container{
+            max-width:1200px;
+            margin:auto;
+            padding:20px;
         }
 
-        /* ── HERO ── */
-        .hero-section {
-            background: linear-gradient(135deg, #714b67 0%, #4a2f44 50%, #2d1a2b 100%);
-            border-radius: 20px;
-            padding: 60px 40px 80px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 50px;
+        /* HERO */
+        .hero{
+            background:linear-gradient(135deg,var(--odoo-primary),var(--odoo-primary-dark));
+            border-radius:16px;
+            padding:50px 30px;
+            color:#fff;
+            text-align:center;
         }
 
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -80px;
-            right: -80px;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+        .hero h1{
+            font-size:40px;
+            margin-bottom:10px;
         }
 
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            bottom: -60px;
-            left: -60px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
+        .hero p{
+            font-size:16px;
+            opacity:0.9;
+            max-width:700px;
+            margin:auto;
         }
 
-        .hero-title {
-            font-size: 52px;
-            font-weight: 900;
-            color: #fff;
-            line-height: 1.15;
-            margin-bottom: 18px;
+        .badges span{
+            display:inline-block;
+            background:rgba(255,255,255,0.15);
+            padding:6px 14px;
+            border-radius:20px;
+            font-size:12px;
+            margin:4px;
         }
 
-        .hero-title span {
-            color: #e0b4d0;
+        /* SECTION TITLE */
+        .section-title{
+            text-align:center;
+            margin:60px 0 30px;
         }
 
-        .hero-subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.80);
-            line-height: 1.7;
-            margin-bottom: 32px;
+        .section-title h2{
+            color:var(--odoo-primary);
+            margin-bottom:10px;
         }
 
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            color: #fff;
-            border-radius: 30px;
-            padding: 6px 18px;
-            font-size: 13px;
-            font-weight: 600;
-            margin: 4px;
-            backdrop-filter: blur(6px);
+        .line{
+            width:60px;
+            height:4px;
+            background:var(--odoo-primary);
+            margin:10px auto;
+            border-radius:3px;
         }
 
-        .hero-icon-box {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            text-align: center;
-            backdrop-filter: blur(10px);
+        /* GRID */
+        .row{
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
         }
 
-        .hero-icon-box img {
-            max-width: 130px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        .col{
+            flex:1 1 300px;
         }
 
-        /* ── PRICE TAG ── */
-        .price-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #f7971e, #ffd200);
-            color: #2d1a2b;
-            border-radius: 14px;
-            padding: 10px 22px;
-            font-size: 22px;
-            font-weight: 900;
-            margin-top: 14px;
-            box-shadow: 0 4px 16px rgba(247, 151, 30, 0.4);
-            letter-spacing: 1px;
+        /* CARD */
+        .card{
+            background:#fff;
+            border:1px solid #eee;
+            border-radius:14px;
+            padding:25px;
+            height:100%;
+            transition:0.3s;
         }
 
-        .price-tag small {
-            font-size: 12px;
-            font-weight: 600;
-            opacity: 0.75;
-            display: block;
-            letter-spacing: 0;
+        .card:hover{
+            box-shadow:0 10px 30px rgba(0,0,0,0.08);
         }
 
-        /* ── SCREENSHOT SECTION ── */
-        .screenshot-block {
-            background: #f8f5fb;
-            border-radius: 16px;
-            padding: 40px 36px;
-            margin-bottom: 30px;
-            border: 1px solid #f0e8ed;
+        .card h4{
+            color:var(--odoo-primary-dark);
+            margin-bottom:10px;
         }
 
-        .screenshot-block .ss-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            color: #fff;
-            border-radius: 50%;
-            font-weight: 800;
-            font-size: 16px;
-            flex-shrink: 0;
-            margin-bottom: 14px;
+        .card p{
+            font-size:14px;
+            color:var(--text-muted);
+            line-height:1.6;
         }
 
-        .screenshot-block h4 {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 6px;
+        /* SCREENSHOT */
+        .screenshot{
+            background:var(--odoo-light);
+            border-radius:14px;
+            padding:20px;
+            margin-bottom:25px;
         }
 
-        .screenshot-block .tagline {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 22px;
+        .screenshot img{
+            width:100%;
+            border-radius:10px;
         }
 
-        .screenshot-placeholder {
-            background: #fff;
-            border: 2px dashed #d8c5d4;
-            border-radius: 12px;
-            min-height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: #b09ab8;
-            font-size: 14px;
-            font-weight: 600;
-            gap: 10px;
-            overflow: hidden;
+        /* AUTHOR */
+        .author{
+            background:linear-gradient(135deg,var(--odoo-primary),var(--odoo-primary-dark));
+            border-radius:16px;
+            padding:40px;
+            color:#fff;
+            text-align:center;
+            margin-top:60px;
         }
 
-        .screenshot-placeholder img {
-            width: 100%;
-            border-radius: 10px;
-            display: block;
+        .author h3{
+            margin-bottom:10px;
         }
 
-        .screenshot-placeholder .ph-icon {
-            font-size: 40px;
-            opacity: 0.4;
+        .footer-text{
+            margin-top:20px;
+            font-size:12px;
+            opacity:0.7;
         }
 
-        /* ── CONTACT BUTTONS ── */
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 11px 24px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin: 6px;
-        }
-
-        .contact-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-linkedin {
-            background: #0077b5;
-            color: #fff;
-        }
-
-        .btn-whatsapp {
-            background: #25D366;
-            color: #fff;
-        }
-
-        .btn-email {
-            background: transparent;
-            color: #fff;
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
-        }
-
-        /* ── SECTION TITLE ── */
-        .section-title {
-            font-size: 38px;
-            font-weight: 900;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 16px;
-            margin-bottom: 40px;
-        }
-
-        .title-line {
-            width: 60px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            border-radius: 4px;
-            margin: 12px auto 40px;
-        }
-
-        /* ── FEATURE CARDS ── */
-        .feature-card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 30px 24px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid #f0e8ed;
-            height: 100%;
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(113, 75, 103, 0.18);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            margin-bottom: 18px;
-        }
-
-        .feature-card h4 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        /* ── KEY POINTS ── */
-        .keypoint-card {
-            background: var(--light-bg);
-            border-radius: 14px;
-            padding: 22px 20px;
-            border-left: 4px solid var(--primary);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-        .keypoint-card .kp-icon {
-            font-size: 22px;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .keypoint-card h5 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 5px;
-        }
-
-        .keypoint-card p {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        /* ── NAV TABS ── */
-        .nav-tabs-custom {
-            border: none;
-            background: #f8f5fb;
-            border-radius: 12px;
-            padding: 6px;
-            display: flex;
-            gap: 4px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .nav-tabs-custom .nav-link {
-            border: none;
-            border-radius: 10px;
-            padding: 10px 22px;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--text-muted);
-            background: transparent;
-        }
-
-        .nav-tabs-custom .nav-link.active {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .nav-tabs-custom .nav-link:hover:not(.active) {
-            background: rgba(113, 75, 103, 0.1);
-            color: var(--primary);
-        }
-
-        /* ── RELEASE TABLE ── */
-        .release-table {
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .release-table th {
-            background: var(--primary);
-            color: #fff;
-            font-weight: 600;
-            padding: 14px 18px;
-            font-size: 14px;
-        }
-
-        .release-table td {
-            padding: 12px 18px;
-            font-size: 14px;
-            border-bottom: 1px solid #f0e8ed;
-            vertical-align: middle;
-        }
-
-        .release-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .release-table .version-badge {
-            background: var(--primary);
-            color: #fff;
-            border-radius: 20px;
-            padding: 3px 12px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .release-table .tag-new {
-            background: #e8f8f0;
-            color: #00b09b;
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .release-table .tag-fix {
-            background: #fff3e0;
-            color: #f57c00;
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .release-table .tag-improve {
-            background: #e3f2fd;
-            color: #1976d2;
-            border-radius: 6px;
-            padding: 2px 8px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* ── AUTHOR CARD ── */
-        .author-section {
-            background: linear-gradient(135deg, #714b67, #4a2f44);
-            border-radius: 20px;
-            padding: 50px 40px;
-            color: #fff;
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .author-section h2 {
-            font-weight: 800;
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .author-section p {
-            color: rgba(255, 255, 255, 0.80);
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-
-        .author-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            margin: 0 auto 18px;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-        }
-
-        /* ── SUPPORT ── */
-        .support-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin: 4px;
-        }
-
-        .badge-community {
-            background: #017E84;
-            color: #fff;
-        }
-
-        .badge-enterprise {
-            background: #875A7B;
-            color: #fff;
-        }
-
-        .badge-on-premise {
-            border: 1px solid #5B899E;
-            color: #5B899E;
-        }
-
-        .badge-odoo-sh {
-            border: 1px solid #714b67;
-            color: #714b67;
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .hero h1{
+                font-size:28px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container py-5">
+<div class="container">
 
-        <!-- ═══════════════════════════════════════════
-         HERO SECTION
-    ═══════════════════════════════════════════ -->
-        <div class="hero-section">
-            <div class="row align-items-center g-4">
-                <div class="col-lg-7">
-                    <h1 class="hero-title">
-                        Custom Invoice<br><span>Reports</span>
-                    </h1>
-                    <p class="hero-subtitle">
-                        Professional custom PDF invoices for Odoo 15 with
-                        <strong style="color:#e0b4d0">Previous Credit tracking</strong>,
-                        POS integration, and fully configurable styles —
-                        built for Accounting &amp; Point of Sale.
-                    </p>
+    <!-- HERO -->
+    <div class="hero">
+        <h1>Custom Invoice Reports</h1>
+        <p>
+            Professional custom PDF invoices for Odoo 15 with Previous Credit tracking,
+            POS integration, and fully configurable styles.
+        </p>
+        <div class="badges">
+            <span>✔ Odoo 15</span>
+            <span>✔ Community</span>
+            <span>✔ Enterprise</span>
+            <span>✔ Odoo.sh</span>
+        </div>
+    </div>
 
-                    <!-- Support Badges -->
-                    <div class="mb-4">
-                        <span class="hero-badge"><i class="fa fa-check-circle me-1"></i> Odoo 15</span>
-                        <span class="hero-badge"><i class="fa fa-building me-1"></i> Community</span>
-                        <span class="hero-badge"><i class="fa fa-star me-1"></i> Enterprise</span>
-                        <span class="hero-badge"><i class="fa fa-server me-1"></i> On Premise</span>
-                        <span class="hero-badge"><i class="fa fa-cloud me-1"></i> Odoo.sh</span>
-                    </div>
+    <!-- FEATURES -->
+    <div class="section-title">
+        <h2>Key Highlights</h2>
+        <div class="line"></div>
+    </div>
 
-                    <!-- Contact Buttons -->
-                    <div>
-                        <a href="https://www.linkedin.com/in/ahmad-odoo5/" target="_blank"
-                            class="contact-btn btn-linkedin">
-                            <i class="fab fa-linkedin"></i> LinkedIn Profile
-                        </a>
-                        <a href="https://wa.me/923056567570" target="_blank" class="contact-btn btn-whatsapp">
-                            <i class="fab fa-whatsapp"></i> 0305-6567570
-                        </a>
-                        <a href="mailto:m.ahmadodoo5@gmail.com" class="contact-btn btn-email">
-                            <i class="fa fa-envelope"></i> Email Support
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="hero-icon-box">
-                        <img src="./icon.png" alt="Custom Invoice Reports" class="mb-3" />
-                        <div style="color:rgba(255,255,255,0.85); font-size:15px; font-weight:600;">
-                            Custom Invoice Reports
-                        </div>
-                        <div style="color:rgba(255,255,255,0.55); font-size:12px; margin-top:6px;">
-                            v15.0.1.0.29 &nbsp;|&nbsp; AM Odoo Solutions
-                        </div>
-                        <div style="margin-top:14px;">
-                            <span class="hero-badge" style="font-size:11px;">
-                                <i class="fa fa-calendar me-1"></i> Released: 01 August 2025
-                            </span>
-                            <div class="price-tag" style="margin-top:16px; justify-content:center;">
-                                <i class="fa fa-tag"></i>
-                                <div>
-                                    <span>$55</span>
-                                    <small>One-time License</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="row">
+
+        <div class="col">
+            <div class="card">
+                <h4>🧾 Custom PDF Invoices</h4>
+                <p>Fully customizable invoice templates for Accounting and POS modules with font control and logo
+                    alignment.</p>
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════
-         KEY HIGHLIGHTS
-    ═══════════════════════════════════════════ -->
-        <div class="my-5">
-            <h2 class="section-title">KEY HIGHLIGHTS</h2>
-            <div class="title-line"></div>
-
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#f3e8f7;">🧾</div>
-                        <h4>Custom PDF Invoices</h4>
-                        <p>Fully customizable invoice templates for both Accounting and POS modules.
-                            Control font sizes, bold styles, logo alignment, and more from settings.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#e8f8f0;">💳</div>
-                        <h4>Previous Credit Display</h4>
-                        <p>Shows cumulative Customer Account (credit) deductions from all POS orders
-                            on the invoice — accurate running total, not invoice residuals.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#fff3e0;">🏪</div>
-                        <h4>POS Integration</h4>
-                        <p>Seamlessly hooks into Odoo POS PaymentScreen. Calculates and stores
-                            previous credit at order validation time via JS + backend RPC.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#e3f2fd;">🎨</div>
-                        <h4>Configurable Styles</h4>
-                        <p>Per-field font size and bold settings via Invoice Report Settings.
-                            Applies automatically to PDF output — no code changes needed.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#fce4ec;">📄</div>
-                        <h4>A5 Report Format</h4>
-                        <p>Compact A5 invoice format for POS — suitable for thermal or small-format
-                            printers in retail environments.</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card">
-                        <div class="feature-icon" style="background:#f3e8f7;">⬇️</div>
-                        <h4>PDF Download Button</h4>
-                        <p>One-click PDF download directly from the invoice form in Odoo backend.
-                            Auto-detects POS vs Accounting and opens the correct template.</p>
-                    </div>
-                </div>
+        <div class="col">
+            <div class="card">
+                <h4>💳 Previous Credit Display</h4>
+                <p>Displays cumulative customer credit from POS orders accurately on the invoice.</p>
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════
-         TABS: KEY POINTS / FEATURES / RELEASES
-    ═══════════════════════════════════════════ -->
-        <div class="my-5 p-4 p-md-5"
-            style="background:#fff; border:1px solid #f0e8ed; border-radius:20px; box-shadow:var(--card-shadow)">
-
-            <ul class="nav nav-tabs-custom" id="mainTabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#screenshots" role="tab">
-                        📸 Screenshots
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#features" role="tab">
-                        ⚙️ Features
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#releases" role="tab">
-                        📋 Releases
-                    </a>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-
-                <!-- SCREENSHOTS TAB -->
-                <div class="tab-pane fade show active" id="screenshots" role="tabpanel">
-
-                    <!-- Screenshot 1 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">1</div>
-                            <div>
-                                <h4>Custom Invoice — Accounting</h4>
-                                <p class="tagline mb-0">Professional A4 invoice with company logo, customer details,
-                                    itemized table, and customizable font sizes — generated directly from Odoo
-                                    Accounting.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/4.png" alt="Custom Invoice Accounting"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">🧾</div>
-                                <div>Screenshot 1 — Custom Invoice (Accounting)</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/4.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 2 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">2</div>
-                            <div>
-                                <h4>Custom Invoice — POS</h4>
-                                <p class="tagline mb-0">Dedicated POS invoice template with Previous Credit row,
-                                    payment methods breakdown, and Amount Due — triggered automatically after order
-                                    validation.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/3.png" alt="Custom Invoice POS"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">🏪</div>
-                                <div>Screenshot 2 — Custom Invoice (POS)</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/screenshot_02.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 3 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">3</div>
-                            <div>
-                                <h4>Previous Credit on Invoice</h4>
-                                <p class="tagline mb-0">The Previous Credit row appears automatically on the invoice
-                                    when a Customer Account payment has been made — showing the exact cumulative CA
-                                    amount.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/6.png" alt="Previous Credit on Invoice"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">💳</div>
-                                <div>Screenshot 3 — Previous Credit Row</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/6.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 4 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">4</div>
-                            <div>
-                                <h4>Custom Invoice Button Added </h4>
-                                <p class="tagline mb-0">A "Custom Invoice (POS)" button added directly on the POS
-                                    Payment Screen — cashier can print the custom invoice before or after validation.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/9.png" alt="POS Payment Screen"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">🖥️</div>
-                                <div>Screenshot 4 — POS Payment Screen Button</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/9.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 5 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">5</div>
-                            <div>
-                                <h4>Invoice Report Settings</h4>
-                                <p class="tagline mb-0">Control every font size and bold toggle from
-                                    a single settings panel — company name, dates, table columns,
-                                    Previous Credit, Amount Due, and more.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/2.png" alt="Invoice Report Settings"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">🎨</div>
-                                <div>Screenshot 5 — Invoice Report Settings</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/2.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 6 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">6</div>
-                            <div>
-                                <h4>A5 Compact POS Invoice</h4>
-                                <p class="tagline mb-0">Small-format A5 report ideal for thermal or receipt printers
-                                    in retail POS setups — same data, half the space.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/11.png" alt="A5 Compact Invoice"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">📄</div>
-                                <div>Screenshot 6 — A5 Compact POS Invoice</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/11.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Screenshot 7 -->
-                    <div class="screenshot-block">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="ss-number">7</div>
-                            <div>
-                                <h4>PDF Download Button on Invoice Form</h4>
-                                <p class="tagline mb-0">One-click PDF download from the Odoo invoice form view.
-                                    The module auto-detects POS vs Accounting and opens the correct template.</p>
-                            </div>
-                        </div>
-                        <div class="screenshot-placeholder">
-                            <img src="./assets/screenshots/10.png" alt="PDF Download Button"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                            <div
-                                style="display:none; flex-direction:column; align-items:center; padding:40px; color:#b09ab8;">
-                                <div class="ph-icon">⬇️</div>
-                                <div>Screenshot 7 — PDF Download Button</div>
-                                <small style="opacity:0.6; margin-top:6px;">Add image:
-                                    assets/screenshots/10.png</small>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- FEATURES TAB -->
-                <div class="tab-pane fade" id="features" role="tabpanel">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5 style="color:var(--primary); font-weight:700; margin-bottom:16px;">
-                                <i class="fa fa-store me-2"></i>POS Features
-                            </h5>
-                            <ul style="list-style:none; padding:0;">
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ <strong>Previous Credit</strong> auto-calculated at order validation
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ <strong>Customer Account</strong> payment method auto-detection
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Stored in <code>order.previous_credit</code> and exported to receipt
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Custom Invoice (POS) button on PaymentScreen
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Custom POS report replaces default Odoo POS invoice
-                                </li>
-                                <li style="padding:8px 0; font-size:14px;">
-                                    ✅ A5 compact invoice format for small printers
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 style="color:var(--primary); font-weight:700; margin-bottom:16px;">
-                                <i class="fa fa-file-invoice me-2"></i>Accounting Features
-                            </h5>
-                            <ul style="list-style:none; padding:0;">
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ <strong>Previous Credit</strong> = sum of other unpaid invoices residuals
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Custom Accounting invoice report (A4)
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ PDF Download button directly on invoice form
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Auto-detects POS vs Accounting and picks correct template
-                                </li>
-                                <li style="padding:8px 0; border-bottom:1px solid #f0e8ed; font-size:14px;">
-                                    ✅ Invoice Report Settings: per-field font size &amp; bold control
-                                </li>
-                                <li style="padding:8px 0; font-size:14px;">
-                                    ✅ Supports <code>out_invoice</code> and <code>out_refund</code>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <hr style="border-color:#f0e8ed; margin:24px 0;">
-
-                    <h5 style="color:var(--primary); font-weight:700; margin-bottom:16px;">
-                        <i class="fa fa-sliders me-2"></i>Configurable Report Settings
-                    </h5>
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <div style="background:#f8f5fb; border-radius:10px; padding:14px; font-size:13px;">
-                                <strong>Typography Controls</strong><br>
-                                Company name, address, invoice number, date, due date — all font sizes individually
-                                configurable.
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div style="background:#f8f5fb; border-radius:10px; padding:14px; font-size:13px;">
-                                <strong>Table Columns</strong><br>
-                                Description, Quantity, Price, Taxes, Amount — each column's font size and bold toggle.
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div style="background:#f8f5fb; border-radius:10px; padding:14px; font-size:13px;">
-                                <strong>Totals Section</strong><br>
-                                Total, Paid, Previous Credit, Amount Due — heading and value font sizes with bold
-                                controls.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RELEASES TAB -->
-                <div class="tab-pane fade" id="releases" role="tabpanel">
-                    <table class="table release-table">
-                        <thead>
-                            <tr>
-                                <th>Version</th>
-                                <th>Release Date</th>
-                                <th>Type</th>
-                                <th>Changes</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr style="background:#fdf8ff;">
-                                <td><span class="version-badge">v15.0.1.0.29</span></td>
-                                <td><strong>24 Feb 2026</strong></td>
-                                <td><span class="tag-fix">FIX</span></td>
-                                <td>
-                                    Fixed Previous Credit calculation: now sums Customer Account payments
-                                    from <code>pos.payment</code> records (all orders, incl. current) —
-                                    instead of <code>amount_residual</code> of unpaid invoices.
-                                    Two-step JS formula: backend prev orders + current order CA lines.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="version-badge">v15.0.1.0.25</span></td>
-                                <td>Jan 2026</td>
-                                <td><span class="tag-improve">IMPROVE</span></td>
-                                <td>
-                                    Improved RPC timing in JS — Previous Credit RPC moved before
-                                    <code>super.validateOrder()</code>. Added <code>isCustomerAccountMethod()</code>
-                                    helper function. Console debug logs added.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="version-badge">v15.0.1.0.20</span></td>
-                                <td>Dec 2025</td>
-                                <td><span class="tag-improve">IMPROVE</span></td>
-                                <td>
-                                    Added <code>_is_customer_account_pm()</code> static helper in
-                                    <code>account_move.py</code>. Refactored <code>pos_get_previous_credit</code>
-                                    RPC to use <code>pos.order</code> table instead of <code>account.move</code>.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="version-badge">v15.0.1.0.15</span></td>
-                                <td>Oct 2025</td>
-                                <td><span class="tag-new">NEW</span></td>
-                                <td>
-                                    Accounting invoice report template (A4). Added
-                                    <code>previous_credit</code> field to <code>account.move</code>.
-                                    PDF download button on invoice form. Invoice Report Settings model.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="version-badge">v15.0.1.0.10</span></td>
-                                <td>Sep 2025</td>
-                                <td><span class="tag-new">NEW</span></td>
-                                <td>
-                                    POS invoice report template (A4). Custom POS button on PaymentScreen.
-                                    Override <code>push_and_invoice_order</code> to use custom report.
-                                    A5 compact format added.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span class="version-badge">v15.0.1.0.1</span></td>
-                                <td><strong>01 Aug 2025</strong> 🚀</td>
-                                <td><span class="tag-new">NEW</span></td>
-                                <td>
-                                    Initial release. Module structure, manifest, basic POS previous credit
-                                    field, <code>pos_get_previous_credit</code> RPC stub,
-                                    Order model extension in JS.
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="col">
+            <div class="card">
+                <h4>🏪 POS Integration</h4>
+                <p>Hooks into Odoo POS Payment Screen and calculates Previous Credit via backend RPC.</p>
             </div>
         </div>
 
-        <!-- ═══════════════════════════════════════════
-         SERVICES SECTION
-     ═══════════════════════════════════════════ -->
-        <div class="my-5">
-            <h2 class="section-title">OUR SERVICES</h2>
-            <p class="section-subtitle">End-to-end Odoo solutions tailored for your business</p>
-            <div class="title-line"></div>
-
-            <div class="row g-4">
-
-                <!-- Service 1: Implementation -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card" style="border-top: 4px solid #714b67;">
-                        <div class="feature-icon" style="background:#f3e8f7; font-size:32px;">🚀</div>
-                        <h4>Odoo Implementation</h4>
-                        <p>Full-cycle Odoo deployment from scratch — requirements gathering,
-                            configuration, data migration, user training, and go-live support.
-                            We set up your business on Odoo the right way.</p>
-                        <div style="margin-top:16px;">
-                            <span
-                                style="background:#f3e8f7; color:#714b67; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Sales</span>
-                            <span
-                                style="background:#f3e8f7; color:#714b67; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Inventory</span>
-                            <span
-                                style="background:#f3e8f7; color:#714b67; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">HR</span>
-                            <span
-                                style="background:#f3e8f7; color:#714b67; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">POS</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 2: Customization -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card" style="border-top: 4px solid #4a2f44;">
-                        <div class="feature-icon" style="background:#ede0f5; font-size:32px;">🛠️</div>
-                        <h4>Odoo Customization</h4>
-                        <p>Custom modules, reports, workflows, and UI built specifically
-                            for your business logic. Python backend, JS/OWL frontend,
-                            QWeb PDF reports — all done clean and maintainable.</p>
-                        <div style="margin-top:16px;">
-                            <span
-                                style="background:#ede0f5; color:#4a2f44; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Python</span>
-                            <span
-                                style="background:#ede0f5; color:#4a2f44; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">JavaScript</span>
-                            <span
-                                style="background:#ede0f5; color:#4a2f44; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">QWeb</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 3: Support -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card" style="border-top: 4px solid #00b09b;">
-                        <div class="feature-icon" style="background:#e0f7f4; font-size:32px;">🎯</div>
-                        <h4>Odoo Support</h4>
-                        <p>Ongoing technical support, bug fixing, performance tuning,
-                            and server maintenance. Monthly retainer plans available
-                            — keep your Odoo running at peak performance.</p>
-                        <div style="margin-top:16px;">
-                            <span
-                                style="background:#e0f7f4; color:#00796b; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Bug
-                                Fixing</span>
-                            <span
-                                style="background:#e0f7f4; color:#00796b; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Performance</span>
-                            <span
-                                style="background:#e0f7f4; color:#00796b; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">DevOps</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 4: Migration -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card" style="border-top: 4px solid #f57c00;">
-                        <div class="feature-icon" style="background:#fff3e0; font-size:32px;">🔄</div>
-                        <h4>Odoo Migration</h4>
-                        <p>Safe and reliable version upgrades — Odoo 12 → 15 → 16 → 17 → 18.
-                            Custom module migration, data migration, and full testing
-                            to ensure zero data loss during the upgrade process.</p>
-                        <div style="margin-top:16px;">
-                            <span
-                                style="background:#fff3e0; color:#e65100; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">v12
-                                → v18</span>
-                            <span
-                                style="background:#fff3e0; color:#e65100; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Data
-                                Migration</span>
-                            <span
-                                style="background:#fff3e0; color:#e65100; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Zero
-                                Downtime</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 5: Integration -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card" style="border-top: 4px solid #1976d2;">
-                        <div class="feature-icon" style="background:#e3f2fd; font-size:32px;">🔗</div>
-                        <h4>Odoo Integration</h4>
-                        <p>Connect Odoo with third-party platforms and APIs — WhatsApp,
-                            Meta, Google Workspace, payment gateways, e-commerce,
-                            and custom REST/JSON API integrations.</p>
-                        <div style="margin-top:16px;">
-                            <span
-                                style="background:#e3f2fd; color:#1565c0; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">WhatsApp</span>
-                            <span
-                                style="background:#e3f2fd; color:#1565c0; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Meta</span>
-                            <span
-                                style="background:#e3f2fd; color:#1565c0; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">Google</span>
-                            <span
-                                style="background:#e3f2fd; color:#1565c0; border-radius:20px; padding:4px 12px; font-size:12px; font-weight:700;">REST
-                                API</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CTA Card -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="feature-card"
-                        style="background: linear-gradient(135deg, #714b67, #4a2f44); border: none; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; min-height:220px;">
-                        <div style="font-size:40px; margin-bottom:12px;">💬</div>
-                        <h4 style="color:#fff; font-size:20px;">Need a Custom Solution?</h4>
-                        <p style="color:rgba(255,255,255,0.8); font-size:13px; margin-bottom:20px;">
-                            Let's discuss your project requirements.
-                        </p>
-                        <a href="https://wa.me/923056567570" target="_blank"
-                            style="background:#25D366; color:#fff; border-radius:10px; padding:10px 22px; text-decoration:none; font-weight:700; font-size:14px;">
-                            <i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ═══════════════════════════════════════════
-         AUTHOR / CONTACT SECTION
-     ═══════════════════════════════════════════ -->
-        <div class="author-section">
-            <div class="author-avatar">👨‍💻</div>
-            <h2 style="font-size:28px; letter-spacing:1px;">Ahmad_Odoo5 &nbsp;|&nbsp; Odoo Developer &nbsp;|&nbsp;
-                Python &nbsp;|&nbsp; DevOps Engineer</h2>
-            <p>
-                Odoo specialist with expertise in <strong style="color:#e0b4d0;">POS · Accounting · Sales · Inventory ·
-                    HR · Payroll · Manufacturing · Project · CRM · Purchase · Website · E-commerce</strong>
-                and custom module development.<br>
-                Specialized integrations: <strong style="color:#e0b4d0;">Meta · WhatsApp · Google Workspace</strong>
-                &amp; custom API integrations.<br>
-                <span style="opacity:0.75;">Based in Pakistan &nbsp;·&nbsp; Available for freelance &amp; enterprise
-                    projects worldwide.</span>
-            </p>
-            <div>
-                <a href="https://www.linkedin.com/in/ahmad-odoo5/" target="_blank" class="contact-btn btn-linkedin"
-                    style="margin:6px;">
-                    <i class="fab fa-linkedin"></i> linkedin.com/in/ahmad-odoo5
-                </a>
-                <a href="https://wa.me/923056567570" target="_blank" class="contact-btn btn-whatsapp"
-                    style="margin:6px;">
-                    <i class="fab fa-whatsapp"></i> 0305-6567570
-                </a>
-                <a href="mailto:m.ahmadodoo5@gmail.com" class="contact-btn btn-email" style="margin:6px;">
-                    <i class="fa fa-envelope"></i> m.ahmadodoo5@gmail.com
-                </a>
-            </div>
-
-            <div style="margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.15);">
-                <div class="row justify-content-center g-3">
-                    <div class="col-auto">
-                        <div style="color:rgba(255,255,255,0.6); font-size:13px; margin-bottom:8px;">
-                            <strong>Supports</strong>
-                        </div>
-                        <span class="support-badge badge-community"><i class="fa fa-check me-1"></i>Community</span>
-                        <span class="support-badge badge-enterprise"><i class="fa fa-check me-1"></i>Enterprise</span>
-                    </div>
-                    <div class="col-auto">
-                        <div style="color:rgba(255,255,255,0.6); font-size:13px; margin-bottom:8px;">
-                            <strong>Availability</strong>
-                        </div>
-                        <span class="support-badge badge-on-premise"
-                            style="background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.3)">
-                            <i class="fa fa-check me-1"></i>On Premise
-                        </span>
-                        <span class="support-badge"
-                            style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.3)">
-                            <i class="fa fa-times me-1" style="color:#ff6b6b;"></i>Odoo Online
-                        </span>
-                        <span class="support-badge"
-                            style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.3)">
-                            <i class="fa fa-check me-1"></i>Odoo.sh
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="margin-top:24px; color:rgba(255,255,255,0.4); font-size:12px;">
-                Module: odoo_custom_invoice &nbsp;|&nbsp; Version: 15.0.1.0.29 &nbsp;|&nbsp;
-                Initial Release: 01 August 2025 &nbsp;|&nbsp; License: LGPL-3
+        <div class="col">
+            <div class="card">
+                <h4>⚙ Configurable Styles</h4>
+                <p>Control font sizes and bold styles directly from Invoice Report Settings.</p>
             </div>
         </div>
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- SCREENSHOTS -->
+    <div class="section-title">
+        <h2>Screenshots</h2>
+        <div class="line"></div>
+    </div>
 
+    <div class="screenshot">
+        <h4>Accounting Invoice (A4)</h4>
+        <img src="assets/screenshots/4.png" alt="Accounting Invoice"/>
+    </div>
+
+    <div class="screenshot">
+        <h4>POS Invoice</h4>
+        <img src="assets/screenshots/3.png" alt="POS Invoice"/>
+    </div>
+
+    <div class="screenshot">
+        <h4>Invoice Settings</h4>
+        <img src="assets/screenshots/2.png" alt="Settings"/>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="section-title">
+        <h2>Our Services</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="row">
+
+        <div class="col">
+            <div class="card">
+                <h4>🚀 Odoo Implementation</h4>
+                <p>Full deployment including configuration, data migration and go-live support.</p>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4>🛠 Odoo Customization</h4>
+                <p>Custom modules, workflows, reports and integrations tailored to your needs.</p>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card">
+                <h4>🔄 Odoo Migration</h4>
+                <p>Safe upgrades from older versions to Odoo 15, 16, 17, 18.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- AUTHOR -->
+    <div class="author">
+        <h3>Ahmad_Odoo5 | Odoo Developer</h3>
+        <p>
+            Specialist in POS, Accounting, Sales, Inventory, HR, Manufacturing and custom integrations.
+            Available for freelance & enterprise projects worldwide.
+        </p>
+
+        <div class="footer-text">
+            Module: odoo_custom_invoice | Version: 15.0.1.0.29 | License: LGPL-3
+        </div>
+    </div>
+
+</div>
+</body>
 </html>
