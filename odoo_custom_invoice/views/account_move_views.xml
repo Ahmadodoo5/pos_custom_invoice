@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Add Previous Credit field after amount_residual -->
+        <record id="view_move_form_inherit_previous_credit_1" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.previous.credit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_residual'][@class='oe_subtotal_footer_separator']" position="after">
+                    <field name="previous_credit"
+                           class="oe_subtotal_footer_separator"
+                           attrs="{'invisible': ['|', ('state', '=', 'draft'), ('previous_credit', '=', 0)]}"
+                           widget="monetary"
+                           options="{'currency_field': 'company_currency_id'}"/>
+                </xpath>
+
+                <!-- Add Download PDF button -->
+                <xpath expr="//button[@name='action_invoice_sent']" position="after">
+                    <button name="action_download_invoice_pdf"
+                            type="object"
+                            string="Download PDF"
+                            class="oe_stat_button"
+                            icon="fa-download"
+                            attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

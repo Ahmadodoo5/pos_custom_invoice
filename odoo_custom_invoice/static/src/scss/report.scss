@@ -1,0 +1,28 @@
+/* Responsive Customer Address Block for Invoice Reports */
+/* Font size automatically adjusts for A4 and A5 paper sizes */
+
+.pos_partner_address_responsive {
+    --cust-font-size: 14px; /* Default for A4 */
+    font-size: var(--cust-font-size);
+}
+
+.pos_partner_address_responsive .customer-name {
+    font-weight: bold;
+    font-size: var(--cust-font-size);
+    margin-bottom: 5px;
+}
+
+.pos_partner_address_responsive address {
+    font-size: var(--cust-font-size);
+}
+
+.pos_partner_address_responsive address *,
+.pos_partner_address_responsive address ul,
+.pos_partner_address_responsive address ul li,
+.pos_partner_address_responsive address span,
+.pos_partner_address_responsive address div {
+    font-size: var(--cust-font-size) !important;
+}
+
+/* Responsive adjustments based on CSS variables set in template */
+/* These will be overridden by CSS variables set in the style block */

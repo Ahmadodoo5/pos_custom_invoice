@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Custom Invoice Report for Accounting -->
+        <record id="action_custom_invoice_report_accounting" model="ir.actions.report">
+            <field name="name">Custom Invoice (Accounting)</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_custom_invoice.custom_invoice_report_accounting</field>
+            <field name="report_file">odoo_custom_invoice.custom_invoice_report_accounting</field>
+            <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Custom Invoice Report for POS -->
+        <record id="action_custom_invoice_report_pos" model="ir.actions.report">
+            <field name="name">Custom Invoice (POS)</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_custom_invoice.custom_invoice_report_pos</field>
+            <field name="report_file">odoo_custom_invoice.custom_invoice_report_pos</field>
+            <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- POS Invoice A5 Report -->
+        <record id="action_pos_invoice_a5" model="ir.actions.report">
+            <field name="name">A5 Report</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">odoo_custom_invoice.pos_invoice_a5</field>
+            <field name="report_file">odoo_custom_invoice.pos_invoice_a5</field>
+            <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="account.model_account_move"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
+

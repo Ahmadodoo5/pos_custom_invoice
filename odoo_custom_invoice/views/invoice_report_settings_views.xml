@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_invoice_report_settings_form" model="ir.ui.view">
+            <field name="name">invoice.report.settings.form</field>
+            <field name="model">invoice.report.settings</field>
+            <field name="arch" type="xml">
+                <form string="Invoice Report Settings">
+                    <sheet>
+                        <group>
+                            <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="report_type"/>
+                        </group>
+
+                        <notebook>
+                            <page string="Logo Settings">
+                                <group>
+                                    <field name="custom_logo" widget="image"/>
+                                    <field name="logo_alignment" widget="radio" options="{'horizontal': true}"/>
+                                    <field name="logo_width"/>
+                                    <field name="logo_height"/>
+                                    <field name="paper_size"/>
+                                </group>
+
+                                <!-- 🔹 TUMHARA NAYA BLOCK: Company Header Settings -->
+                                <group string="Company Header Settings">
+                                    <!-- 🔹 Company Name controls -->
+                                    <group string="Company Name">
+                                        <field name="company_name_font_size" string="Label Font Size"/>
+                                        <field name="company_name_bold" string="Label Bold"/>
+                                        <field name="company_name_value_font_size" string="Value Font Size"/>
+                                        <field name="company_name_value_bold" string="Value Bold"/>
+                                    </group>
+
+                                    <!-- 🔹 Company Address controls -->
+                                    <group string="Company Address">
+                                        <field name="company_address_font_size" string="Label Font Size"/>
+                                        <field name="company_address_bold" string="Label Bold"/>
+                                        <field name="company_address_value_font_size" string="Value Font Size"/>
+                                        <field name="company_address_value_bold" string="Value Bold"/>
+                                    </group>
+                                </group>
+                            </page>
+
+
+                            <page string="Header Font Sizes">
+                                <group>
+                                    <group string="Invoice Number">
+                                        <field name="invoice_number_font_size"/>
+                                        <field name="invoice_number_bold"/>
+                                    </group>
+                                    <group string="Customer Name">
+                                        <field name="customer_name_font_size"/>
+                                        <field name="customer_name_bold"/>
+                                    </group>
+                                    <group string="Invoice Date">
+                                        <field name="invoice_date_font_size" string="Heading Font Size"/>
+                                        <field name="invoice_date_bold" string="Heading Bold"/>
+                                        <field name="invoice_date_value_font_size" string="Value Font Size"/>
+                                        <field name="invoice_date_value_bold" string="Value Bold"/>
+                                    </group>
+                                    <group string="Due Date">
+                                        <field name="due_date_font_size" string="Heading Font Size"/>
+                                        <field name="due_date_bold" string="Heading Bold"/>
+                                        <field name="due_date_value_font_size" string="Value Font Size"/>
+                                        <field name="due_date_value_bold" string="Value Bold"/>
+                                    </group>
+                                    <group string="Customer Name Value">
+                                        <field name="customer_name_value_font_size"/>
+                                        <field name="customer_name_value_bold"/>
+                                    </group>
+                                    <group string="Source (Order Ref)">
+                                        <field name="source_font_size" string="Heading Font Size"/>
+                                        <field name="source_bold" string="Heading Bold"/>
+                                        <field name="source_value_font_size" string="Value Font Size"/>
+                                        <field name="source_value_bold" string="Value Bold"/>
+                                    </group>
+                                    <group string="Reference">
+                                        <field name="reference_font_size"/>
+                                        <field name="reference_bold"/>
+                                    </group>
+                                </group>
+
+                            </page>
+
+                            <page string="Table Font Sizes">
+                                <group>
+                                    <group string="Description">
+                                        <field name="table_description_font_size"/>
+                                        <field name="table_description_bold"/>
+                                    </group>
+                                    <group string="Quantity">
+                                        <field name="table_quantity_font_size"/>
+                                        <field name="table_quantity_bold"/>
+                                    </group>
+                                    <group string="Price">
+                                        <field name="table_price_font_size"/>
+                                        <field name="table_price_bold"/>
+                                    </group>
+                                    <group string="Taxes">
+                                        <field name="table_taxes_font_size"/>
+                                        <field name="table_taxes_bold"/>
+                                    </group>
+                                    <group string="Amount">
+                                        <field name="table_amount_font_size"/>
+                                        <field name="table_amount_bold"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Previous Credit Font Sizes">
+                                <group>
+                                    <group string="Previous Credit Heading">
+                                        <field name="previous_credit_heading_font_size"/>
+                                        <field name="previous_credit_heading_bold"/>
+                                    </group>
+                                    <group string="Previous Credit Value">
+                                        <field name="previous_credit_value_font_size"/>
+                                        <field name="previous_credit_value_bold"/>
+                                    </group>
+                                    <group string="Previous Invoices Heading">
+                                        <field name="previous_invoices_heading_font_size"/>
+                                        <field name="previous_invoices_heading_bold"/>
+                                    </group>
+                                    <group string="Previous Invoices Value">
+                                        <field name="previous_invoices_value_font_size"/>
+                                        <field name="previous_invoices_value_bold"/>
+                                    </group>
+                                </group>
+                            </page>
+
+                            <page string="Total &amp; Amount Due Font Sizes">
+                                <group>
+                                    <group string="Total Heading">
+                                        <field name="total_heading_font_size"/>
+                                        <field name="total_heading_bold"/>
+                                    </group>
+                                    <group string="Total Value">
+                                        <field name="total_value_font_size"/>
+                                        <field name="total_value_bold"/>
+                                    </group>
+                                    <group string="Amount Due Heading">
+                                        <field name="amount_due_heading_font_size"/>
+                                        <field name="amount_due_heading_bold"/>
+                                    </group>
+                                    <group string="Amount Due Value">
+                                        <field name="amount_due_value_font_size"/>
+                                        <field name="amount_due_value_bold"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_invoice_report_settings_tree" model="ir.ui.view">
+            <field name="name">invoice.report.settings.tree</field>
+            <field name="model">invoice.report.settings</field>
+            <field name="arch" type="xml">
+                <tree string="Invoice Report Settings">
+                    <field name="company_id"/>
+                    <field name="report_type"/>
+                    <field name="logo_alignment"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_invoice_report_settings" model="ir.actions.act_window">
+            <field name="name">Invoice Report Settings</field>
+            <field name="res_model">invoice.report.settings</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configure Invoice Report Settings
+                </p>
+                <p>
+                    Configure logo alignment, font sizes, and other formatting options for invoice reports.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_invoice_report_settings"
+                  name="Invoice Report Settings"
+                  parent="account.menu_finance"
+                  action="action_invoice_report_settings"
+                  sequence="100"/>
+    </data>
+</odoo>
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Default settings will be created automatically via get_settings method -->
+    </data>
+</odoo>
+
+
+

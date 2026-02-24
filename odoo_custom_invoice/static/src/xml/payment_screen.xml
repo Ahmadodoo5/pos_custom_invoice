@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('validate')]" position="before">
+            <button class="button custom-invoice-pos" t-on-click="printCustomInvoice">
+                <i class="fa fa-file-text-o"/>
+                <span>Custom Invoice (POS)</span>
+            </button>
+        </xpath>
+    </t>
+</templates>
+
